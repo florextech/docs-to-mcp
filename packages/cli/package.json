@@ -1,0 +1,25 @@
+{
+  "name": "@florexlabs/docs-mcp",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "docs-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "dependencies": {
+    "@florexlabs/docs-mcp-types": "workspace:*",
+    "@florexlabs/docs-mcp-crawler": "workspace:*",
+    "@florexlabs/docs-mcp-parser": "workspace:*",
+    "@florexlabs/docs-mcp-chunker": "workspace:*",
+    "@florexlabs/docs-mcp-embeddings": "workspace:*",
+    "@florexlabs/docs-mcp-vector-store": "workspace:*",
+    "@florexlabs/docs-mcp-server": "workspace:*",
+    "commander": "13.1.0",
+    "dotenv": "16.5.0"
+  }
+}
