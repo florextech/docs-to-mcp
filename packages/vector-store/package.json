@@ -1,6 +1,6 @@
 {
   "name": "@florexlabs/docs-to-mcp-vector-store",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -9,7 +9,7 @@
     "dev": "tsup --watch"
   },
   "dependencies": {
-    "@florexlabs/docs-to-mcp-types": "^0.1.2",
+    "@florexlabs/docs-to-mcp-types": "^0.2.0",
     "chromadb": "3.4.3"
   },
   "publishConfig": {
