@@ -25,6 +25,7 @@ export class ChromaVectorStore implements VectorStore {
     if (!this.collection) {
       this.collection = await this.client.getOrCreateCollection({
         name: this.collectionName,
+        embeddingFunction: null,
       });
     }
     return this.collection;
