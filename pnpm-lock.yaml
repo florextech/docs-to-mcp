@@ -36,32 +36,32 @@ importers:
   packages/chunker:
     dependencies:
       '@florexlabs/docs-to-mcp-types':
-        specifier: workspace:*
-        version: link:../types
+        specifier: ^0.1.2
+        version: 0.1.2
 
   packages/cli:
     dependencies:
       '@florexlabs/docs-to-mcp-chunker':
-        specifier: workspace:*
-        version: link:../chunker
+        specifier: ^0.1.2
+        version: 0.1.2
       '@florexlabs/docs-to-mcp-crawler':
-        specifier: workspace:*
-        version: link:../crawler
+        specifier: ^0.1.2
+        version: 0.1.2
       '@florexlabs/docs-to-mcp-embeddings':
-        specifier: workspace:*
-        version: link:../embeddings
+        specifier: ^0.1.2
+        version: 0.1.2(zod@3.25.76)
       '@florexlabs/docs-to-mcp-parser':
-        specifier: workspace:*
-        version: link:../parser
+        specifier: ^0.1.2
+        version: 0.1.2
       '@florexlabs/docs-to-mcp-server':
-        specifier: workspace:*
-        version: link:../mcp-server
+        specifier: ^0.1.2
+        version: 0.1.2
       '@florexlabs/docs-to-mcp-types':
-        specifier: workspace:*
-        version: link:../types
+        specifier: ^0.1.2
+        version: 0.1.2
       '@florexlabs/docs-to-mcp-vector-store':
-        specifier: workspace:*
-        version: link:../vector-store
+        specifier: ^0.1.2
+        version: 0.1.2(openai@4.96.0(zod@3.25.76))
       commander:
         specifier: 13.1.0
         version: 13.1.0
@@ -72,8 +72,8 @@ importers:
   packages/crawler:
     dependencies:
       '@florexlabs/docs-to-mcp-types':
-        specifier: workspace:*
-        version: link:../types
+        specifier: ^0.1.2
+        version: 0.1.2
       playwright:
         specifier: 1.52.0
         version: 1.52.0
@@ -81,8 +81,8 @@ importers:
   packages/embeddings:
     dependencies:
       '@florexlabs/docs-to-mcp-types':
-        specifier: workspace:*
-        version: link:../types
+        specifier: ^0.1.2
+        version: 0.1.2
       '@huggingface/transformers':
         specifier: 3.4.1
         version: 3.4.1
@@ -93,8 +93,8 @@ importers:
   packages/mcp-server:
     dependencies:
       '@florexlabs/docs-to-mcp-types':
-        specifier: workspace:*
-        version: link:../types
+        specifier: ^0.1.2
+        version: 0.1.2
       '@modelcontextprotocol/sdk':
         specifier: 1.12.1
         version: 1.12.1
@@ -105,8 +105,8 @@ importers:
   packages/parser:
     dependencies:
       '@florexlabs/docs-to-mcp-types':
-        specifier: workspace:*
-        version: link:../types
+        specifier: ^0.1.2
+        version: 0.1.2
       cheerio:
         specifier: 1.0.0
         version: 1.0.0
@@ -123,8 +123,8 @@ importers:
   packages/vector-store:
     dependencies:
       '@florexlabs/docs-to-mcp-types':
-        specifier: workspace:*
-        version: link:../types
+        specifier: ^0.1.2
+        version: 0.1.2
       chromadb:
         specifier: 1.9.2
         version: 1.9.2(openai@4.96.0(zod@3.25.76))
@@ -327,6 +327,27 @@ packages:
   '@eslint/plugin-kit@0.2.8':
     resolution: {integrity: sha512-ZAoA40rNMPwSm+AeHpCq8STiNAwzWLJuP8Xv4CHIc9wv/PSuExjMrmjfYNj682vW0OOiZ1HKxzvjQr9XZIisQA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@florexlabs/docs-to-mcp-chunker@0.1.2':
+    resolution: {integrity: sha512-m9owNiB9vOntJwn4EyDTSzaXLJI4M3b6fMS8ioaef049YczictC0syy2/Su4gbHltFErOIBIbPmr5po4/vHfMA==}
+
+  '@florexlabs/docs-to-mcp-crawler@0.1.2':
+    resolution: {integrity: sha512-uPvoPsP8jGOmZGkLu6v0wxL6kWNrrqLSWEG9qnKN6I0jT1CxtlwdaXTjXyLZBtONU/V7FXpuj7/0YeCITNEspA==}
+
+  '@florexlabs/docs-to-mcp-embeddings@0.1.2':
+    resolution: {integrity: sha512-FynivRSNIEU/sWoq/k1UHoNqGGFZBKBGZTIWIMWgjzsfQ8XtnnR6ei9mDpM97zwptRI47IyeSaXrx7o6Z7eV1w==}
+
+  '@florexlabs/docs-to-mcp-parser@0.1.2':
+    resolution: {integrity: sha512-4xr7HUHzRrCyxQAMQlhWkZ4JniqsSyy0e2ILTvb29mZqUrZsNkTeXqRI8xLxh5ukkwufuAQC3RjZmu2doFPkRQ==}
+
+  '@florexlabs/docs-to-mcp-server@0.1.2':
+    resolution: {integrity: sha512-YfeepnjQ7ImuYfeJ/AVCnyELs1bpjKL7d10CYbY69+ZyZZUTeGh1QARSASNhd+7eiuFHjJ8Nf7bCjhS5s8A9fA==}
+
+  '@florexlabs/docs-to-mcp-types@0.1.2':
+    resolution: {integrity: sha512-GVNylMHbwkf0Pf+kNC5OsISFbYXMhOy84KusB8lE5i6okwHxAlczusKL36ujrG/zWiSUQh+uM97wizKfU77R/g==}
+
+  '@florexlabs/docs-to-mcp-vector-store@0.1.2':
+    resolution: {integrity: sha512-09hVkQOAWlUWeMLZl/+8S+tCRq9+OfPDuiD/L6hYnOJZ3DmaKPDGB2oRfu3RlIBKNtinAw9m0+KEiQdxfc9k9g==}
 
   '@hono/node-server@1.19.14':
     resolution: {integrity: sha512-GwtvgtXxnWsucXvbQXkRgqksiH2Qed37H9xHZocE5sA3N8O8O8/8FA3uclQXxXVzc9XBZuEOMK7+r02FmSpHtw==}
@@ -2210,6 +2231,51 @@ snapshots:
     dependencies:
       '@eslint/core': 0.13.0
       levn: 0.4.1
+
+  '@florexlabs/docs-to-mcp-chunker@0.1.2':
+    dependencies:
+      '@florexlabs/docs-to-mcp-types': link:packages/types
+
+  '@florexlabs/docs-to-mcp-crawler@0.1.2':
+    dependencies:
+      '@florexlabs/docs-to-mcp-types': link:packages/types
+      playwright: 1.52.0
+
+  '@florexlabs/docs-to-mcp-embeddings@0.1.2(zod@3.25.76)':
+    dependencies:
+      '@florexlabs/docs-to-mcp-types': link:packages/types
+      '@huggingface/transformers': 3.4.1
+      openai: 4.96.0(zod@3.25.76)
+    transitivePeerDependencies:
+      - encoding
+      - ws
+      - zod
+
+  '@florexlabs/docs-to-mcp-parser@0.1.2':
+    dependencies:
+      '@florexlabs/docs-to-mcp-types': link:packages/types
+      cheerio: 1.0.0
+      turndown: 7.2.0
+
+  '@florexlabs/docs-to-mcp-server@0.1.2':
+    dependencies:
+      '@florexlabs/docs-to-mcp-types': link:packages/types
+      '@modelcontextprotocol/sdk': 1.12.1
+      zod: 3.24.4
+    transitivePeerDependencies:
+      - supports-color
+
+  '@florexlabs/docs-to-mcp-types@0.1.2': {}
+
+  '@florexlabs/docs-to-mcp-vector-store@0.1.2(openai@4.96.0(zod@3.25.76))':
+    dependencies:
+      '@florexlabs/docs-to-mcp-types': link:packages/types
+      chromadb: 1.9.2(openai@4.96.0(zod@3.25.76))
+    transitivePeerDependencies:
+      - '@google/generative-ai'
+      - cohere-ai
+      - encoding
+      - openai
 
   '@hono/node-server@1.19.14(hono@4.12.15)':
     dependencies:
