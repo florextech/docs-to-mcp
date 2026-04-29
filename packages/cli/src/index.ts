@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import 'dotenv/config';
 import { program } from 'commander';
 import { crawl } from '@florexlabs/docs-to-mcp-crawler';
