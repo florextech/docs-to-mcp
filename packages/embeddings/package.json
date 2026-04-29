@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@florexlabs/docs-mcp-types": "workspace:*",
+    "@huggingface/transformers": "3.4.1",
     "openai": "4.96.0"
   }
 }
