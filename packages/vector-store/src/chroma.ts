@@ -1,4 +1,4 @@
-import { ChromaClient, IncludeEnum } from 'chromadb';
+import { ChromaClient } from 'chromadb';
 import type {
   Chunk,
   SearchResult,
@@ -47,10 +47,12 @@ export class ChromaVectorStore implements VectorStore {
 
   async search(embedding: number[], topK: number): Promise<SearchResult[]> {
     const col = await this.getCollection();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const include = ['documents', 'metadatas', 'distances'] as any;
     const res = await col.query({
       queryEmbeddings: [embedding],
       nResults: topK,
-      include: [IncludeEnum.Documents, IncludeEnum.Metadatas, IncludeEnum.Distances],
+      include,
     });
 
     const ids = res.ids[0] ?? [];
@@ -70,7 +72,8 @@ export class ChromaVectorStore implements VectorStore {
     { url: string; title: string; chunks: number }[]
   > {
     const col = await this.getCollection();
-    const all = await col.get({ include: [IncludeEnum.Metadatas] });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const all = await col.get({ include: ['metadatas'] as any });
     const map = new Map<string, { title: string; count: number }>();
     for (const meta of all.metadatas ?? []) {
       if (!meta) continue;
@@ -91,9 +94,10 @@ export class ChromaVectorStore implements VectorStore {
 
   async getBySource(url: string): Promise<Chunk[]> {
     const col = await this.getCollection();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const res = await col.get({
       where: { url },
-      include: [IncludeEnum.Documents, IncludeEnum.Metadatas],
+      include: ['documents', 'metadatas'] as any,
     });
     return (res.ids ?? []).map((id: string, i: number) => ({
       id,
