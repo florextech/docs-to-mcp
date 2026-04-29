@@ -4,11 +4,27 @@ import { program } from 'commander';
 import { crawl } from '@florexlabs/docs-mcp-crawler';
 import { parse } from '@florexlabs/docs-mcp-parser';
 import { chunk } from '@florexlabs/docs-mcp-chunker';
-import { OpenAIEmbeddingProvider } from '@florexlabs/docs-mcp-embeddings';
+import {
+  LocalEmbeddingProvider,
+  OpenAIEmbeddingProvider,
+} from '@florexlabs/docs-mcp-embeddings';
+import type { EmbeddingProvider } from '@florexlabs/docs-mcp-types';
 import { ChromaVectorStore } from '@florexlabs/docs-mcp-vector-store';
 import { startServer } from '@florexlabs/docs-mcp-server';
-import { writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { writeFileSync, mkdirSync, existsSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
+
+function createEmbedder(provider: string, model?: string): EmbeddingProvider {
+  if (provider === 'openai') {
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      console.error('❌ OPENAI_API_KEY required when using --provider openai');
+      process.exit(1);
+    }
+    return new OpenAIEmbeddingProvider(apiKey, model ?? 'text-embedding-3-small');
+  }
+  return new LocalEmbeddingProvider(model ?? 'Xenova/all-MiniLM-L6-v2');
+}
 
 program
   .name('docs-mcp')
@@ -21,20 +37,23 @@ program
   .option('--out <dir>', 'Output directory', './docs-mcp-project')
   .option('--depth <n>', 'Crawl depth', '3')
   .option('--limit <n>', 'Max pages', '50')
-  .option('--provider <name>', 'Embedding provider', 'openai')
-  .option('--model <name>', 'Embedding model', 'text-embedding-3-small')
+  .option('--provider <name>', 'Embedding provider (local or openai)', 'local')
+  .option('--model <name>', 'Embedding model')
   .option('--collection <name>', 'Collection name', 'docs')
   .action(async (url: string, opts) => {
     const outDir = resolve(opts.out);
     mkdirSync(join(outDir, 'src'), { recursive: true });
     mkdirSync(join(outDir, 'data'), { recursive: true });
 
+    const isLocal = opts.provider !== 'openai';
+    const model = opts.model ?? (isLocal ? 'Xenova/all-MiniLM-L6-v2' : 'text-embedding-3-small');
+
     const config = {
       url,
       depth: parseInt(opts.depth),
       limit: parseInt(opts.limit),
       provider: opts.provider,
-      model: opts.model,
+      model,
       collection: opts.collection,
     };
 
@@ -45,9 +64,10 @@ program
 
     writeFileSync(
       join(outDir, '.env.example'),
-      'OPENAI_API_KEY=\nOPENAI_EMBEDDING_MODEL=text-embedding-3-small\nCHROMA_URL=http://localhost:8000\n',
+      `CHROMA_URL=http://localhost:8000\n# Only needed if using --provider openai:\n# OPENAI_API_KEY=\n# OPENAI_EMBEDDING_MODEL=text-embedding-3-small\n`,
     );
 
+    const providerFlag = isLocal ? '' : ' --provider openai';
     writeFileSync(
       join(outDir, 'package.json'),
       JSON.stringify(
@@ -58,9 +78,9 @@ program
           type: 'module',
           scripts: {
             crawl: `docs-mcp crawl ${url} --out ./data --depth ${config.depth} --limit ${config.limit}`,
-            build: `docs-mcp build --collection ${config.collection}`,
-            start: `docs-mcp start --collection ${config.collection}`,
-            dev: `docs-mcp dev --collection ${config.collection}`,
+            build: `docs-mcp build --collection ${config.collection}${providerFlag}`,
+            start: `docs-mcp start --collection ${config.collection}${providerFlag}`,
+            dev: `docs-mcp dev --collection ${config.collection}${providerFlag}`,
           },
           dependencies: {
             '@florexlabs/docs-mcp': '^0.1.0',
@@ -71,20 +91,20 @@ program
       ) + '\n',
     );
 
+    const serverImport = isLocal
+      ? `import { LocalEmbeddingProvider } from '@florexlabs/docs-mcp-embeddings';\nconst embeddings = new LocalEmbeddingProvider('${model}');`
+      : `import { OpenAIEmbeddingProvider } from '@florexlabs/docs-mcp-embeddings';\nconst embeddings = new OpenAIEmbeddingProvider(\n  process.env.OPENAI_API_KEY!,\n  process.env.OPENAI_EMBEDDING_MODEL ?? '${model}',\n);`;
+
     writeFileSync(
       join(outDir, 'src', 'server.ts'),
       `import 'dotenv/config';
-import { OpenAIEmbeddingProvider } from '@florexlabs/docs-mcp-embeddings';
 import { ChromaVectorStore } from '@florexlabs/docs-mcp-vector-store';
 import { startServer } from '@florexlabs/docs-mcp-server';
+${serverImport}
 
 const store = new ChromaVectorStore(
   '${config.collection}',
   process.env.CHROMA_URL ?? 'http://localhost:8000',
-);
-const embeddings = new OpenAIEmbeddingProvider(
-  process.env.OPENAI_API_KEY!,
-  process.env.OPENAI_EMBEDDING_MODEL ?? '${config.model}',
 );
 
 startServer(store, embeddings);
@@ -95,6 +115,10 @@ startServer(store, embeddings);
       join(outDir, 'src', 'config.ts'),
       `export default ${JSON.stringify(config, null, 2)};\n`,
     );
+
+    const setupNote = isLocal
+      ? '# No API keys needed — embeddings run locally!'
+      : '# Add your OPENAI_API_KEY to .env';
 
     writeFileSync(
       join(outDir, 'README.md'),
@@ -107,7 +131,7 @@ MCP server for ${url}
 \`\`\`bash
 npm install
 cp .env.example .env
-# Add your OPENAI_API_KEY to .env
+${setupNote}
 \`\`\`
 
 ## Usage
@@ -147,8 +171,10 @@ Add to \`claude_desktop_config.json\`:
     console.log('Next steps:');
     console.log(`  cd ${opts.out}`);
     console.log('  npm install');
-    console.log('  cp .env.example .env');
-    console.log('  # Add your OPENAI_API_KEY');
+    if (!isLocal) {
+      console.log('  cp .env.example .env');
+      console.log('  # Add your OPENAI_API_KEY');
+    }
     console.log('  npm run crawl');
     console.log('  npm run build');
     console.log('  npm run start');
@@ -175,18 +201,9 @@ program
     const parsed = results.map(parse);
     const allChunks = parsed.flatMap((doc) => chunk(doc));
 
-    writeFileSync(
-      join(outDir, 'crawl-results.json'),
-      JSON.stringify(results, null, 2),
-    );
-    writeFileSync(
-      join(outDir, 'parsed.json'),
-      JSON.stringify(parsed, null, 2),
-    );
-    writeFileSync(
-      join(outDir, 'chunks.json'),
-      JSON.stringify(allChunks, null, 2),
-    );
+    writeFileSync(join(outDir, 'crawl-results.json'), JSON.stringify(results, null, 2));
+    writeFileSync(join(outDir, 'parsed.json'), JSON.stringify(parsed, null, 2));
+    writeFileSync(join(outDir, 'chunks.json'), JSON.stringify(allChunks, null, 2));
 
     console.log(`✅ Crawled ${results.length} pages → ${allChunks.length} chunks`);
     console.log(`   Saved to ${outDir}`);
@@ -196,8 +213,8 @@ program
   .command('build')
   .description('Build embeddings and upsert into vector store')
   .option('--collection <name>', 'Collection name', 'docs')
-  .option('--provider <name>', 'Embedding provider', 'openai')
-  .option('--model <name>', 'Embedding model', 'text-embedding-3-small')
+  .option('--provider <name>', 'Embedding provider (local or openai)', 'local')
+  .option('--model <name>', 'Embedding model')
   .option('--data <dir>', 'Data directory with chunks.json', './data')
   .option('--force', 'Force rebuild', false)
   .option('--verbose', 'Verbose output', false)
@@ -210,23 +227,16 @@ program
       process.exit(1);
     }
 
-    const { readFileSync } = await import('node:fs');
     const chunks = JSON.parse(readFileSync(chunksPath, 'utf-8'));
-
-    const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) {
-      console.error('❌ OPENAI_API_KEY not set');
-      process.exit(1);
-    }
-
-    const embedder = new OpenAIEmbeddingProvider(apiKey, opts.model);
+    const embedder = createEmbedder(opts.provider, opts.model);
     const store = new ChromaVectorStore(
       opts.collection,
       process.env.CHROMA_URL ?? 'http://localhost:8000',
     );
 
-    console.log(`🔨 Embedding ${chunks.length} chunks...`);
-    const batchSize = 100;
+    const providerLabel = opts.provider === 'openai' ? 'OpenAI' : 'local (Transformers.js)';
+    console.log(`🔨 Embedding ${chunks.length} chunks with ${providerLabel}...`);
+    const batchSize = opts.provider === 'openai' ? 100 : 32;
     for (let i = 0; i < chunks.length; i += batchSize) {
       const batch = chunks.slice(i, i + batchSize);
       const texts = batch.map((c: { content: string }) => c.content);
@@ -244,21 +254,14 @@ program
   .command('start')
   .description('Start the MCP server')
   .option('--collection <name>', 'Collection name', 'docs')
-  .option('--provider <name>', 'Embedding provider', 'openai')
-  .option('--model <name>', 'Embedding model', 'text-embedding-3-small')
+  .option('--provider <name>', 'Embedding provider (local or openai)', 'local')
+  .option('--model <name>', 'Embedding model')
   .action(async (opts) => {
-    const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) {
-      console.error('❌ OPENAI_API_KEY not set');
-      process.exit(1);
-    }
-
     const store = new ChromaVectorStore(
       opts.collection,
       process.env.CHROMA_URL ?? 'http://localhost:8000',
     );
-    const embedder = new OpenAIEmbeddingProvider(apiKey, opts.model);
-
+    const embedder = createEmbedder(opts.provider, opts.model);
     await startServer(store, embedder);
   });
 
@@ -266,21 +269,14 @@ program
   .command('dev')
   .description('Start the MCP server in development mode')
   .option('--collection <name>', 'Collection name', 'docs')
-  .option('--provider <name>', 'Embedding provider', 'openai')
-  .option('--model <name>', 'Embedding model', 'text-embedding-3-small')
+  .option('--provider <name>', 'Embedding provider (local or openai)', 'local')
+  .option('--model <name>', 'Embedding model')
   .action(async (opts) => {
-    const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) {
-      console.error('❌ OPENAI_API_KEY not set');
-      process.exit(1);
-    }
-
     const store = new ChromaVectorStore(
       opts.collection,
       process.env.CHROMA_URL ?? 'http://localhost:8000',
     );
-    const embedder = new OpenAIEmbeddingProvider(apiKey, opts.model);
-
+    const embedder = createEmbedder(opts.provider, opts.model);
     console.log('🚀 Starting MCP server in dev mode...');
     await startServer(store, embedder);
   });
