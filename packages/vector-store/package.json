@@ -1,6 +1,6 @@
 {
   "name": "@florexlabs/docs-to-mcp-vector-store",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@florexlabs/docs-to-mcp-types": "^0.1.2",
-    "chromadb": "1.9.2"
+    "chromadb": "3.4.3"
   },
   "publishConfig": {
     "access": "public"

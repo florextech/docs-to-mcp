@@ -1,4 +1,4 @@
-import { ChromaClient } from 'chromadb';
+import { ChromaClient, IncludeEnum } from 'chromadb';
 import type {
   Chunk,
   SearchResult,
@@ -13,7 +13,12 @@ export class ChromaVectorStore implements VectorStore {
     private collectionName: string,
     chromaUrl = 'http://localhost:8000',
   ) {
-    this.client = new ChromaClient({ path: chromaUrl });
+    const url = new URL(chromaUrl);
+    this.client = new ChromaClient({
+      host: url.hostname,
+      port: parseInt(url.port) || 8000,
+      ssl: url.protocol === 'https:',
+    });
   }
 
   private async getCollection() {
@@ -44,19 +49,19 @@ export class ChromaVectorStore implements VectorStore {
     const res = await col.query({
       queryEmbeddings: [embedding],
       nResults: topK,
-      include: ['documents' as never, 'metadatas' as never, 'distances' as never],
+      include: [IncludeEnum.Documents, IncludeEnum.Metadatas, IncludeEnum.Distances],
     });
 
     const ids = res.ids[0] ?? [];
     return ids.map((id: string, i: number) => ({
       id,
-      content: (res.documents as (string | null)[][])[0]?.[i] ?? '',
+      content: String(res.documents?.[0]?.[i] ?? ''),
       metadata: {
-        url: ((res.metadatas as (Record<string, unknown> | null)[][])[0]?.[i]?.url as string) ?? '',
-        title: ((res.metadatas as (Record<string, unknown> | null)[][])[0]?.[i]?.title as string) ?? '',
-        heading: ((res.metadatas as (Record<string, unknown> | null)[][])[0]?.[i]?.heading as string) || undefined,
+        url: String(res.metadatas?.[0]?.[i]?.url ?? ''),
+        title: String(res.metadatas?.[0]?.[i]?.title ?? ''),
+        heading: res.metadatas?.[0]?.[i]?.heading ? String(res.metadatas[0][i].heading) : undefined,
       },
-      score: 1 - ((res.distances as number[][])?.[0]?.[i] ?? 0),
+      score: 1 - (res.distances?.[0]?.[i] ?? 0),
     }));
   }
 
@@ -64,16 +69,16 @@ export class ChromaVectorStore implements VectorStore {
     { url: string; title: string; chunks: number }[]
   > {
     const col = await this.getCollection();
-    const all = await col.get({ include: ['metadatas' as never] });
+    const all = await col.get({ include: [IncludeEnum.Metadatas] });
     const map = new Map<string, { title: string; count: number }>();
-    for (const meta of (all.metadatas ?? []) as (Record<string, unknown> | null)[]) {
+    for (const meta of all.metadatas ?? []) {
       if (!meta) continue;
-      const url = meta.url as string;
+      const url = String(meta.url);
       const existing = map.get(url);
       if (existing) {
         existing.count++;
       } else {
-        map.set(url, { title: (meta.title as string) ?? '', count: 1 });
+        map.set(url, { title: String(meta.title ?? ''), count: 1 });
       }
     }
     return [...map.entries()].map(([url, { title, count }]) => ({
@@ -87,15 +92,15 @@ export class ChromaVectorStore implements VectorStore {
     const col = await this.getCollection();
     const res = await col.get({
       where: { url },
-      include: ['documents' as never, 'metadatas' as never],
+      include: [IncludeEnum.Documents, IncludeEnum.Metadatas],
     });
     return (res.ids ?? []).map((id: string, i: number) => ({
       id,
-      content: (res.documents as (string | null)[])[i] ?? '',
+      content: String(res.documents?.[i] ?? ''),
       metadata: {
-        url: ((res.metadatas as (Record<string, unknown> | null)[])[i]?.url as string) ?? '',
-        title: ((res.metadatas as (Record<string, unknown> | null)[])[i]?.title as string) ?? '',
-        heading: ((res.metadatas as (Record<string, unknown> | null)[])[i]?.heading as string) || undefined,
+        url: String(res.metadatas?.[i]?.url ?? ''),
+        title: String(res.metadatas?.[i]?.title ?? ''),
+        heading: res.metadatas?.[i]?.heading ? String(res.metadatas[i].heading) : undefined,
       },
     }));
   }
