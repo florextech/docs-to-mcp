@@ -129,6 +129,7 @@ MCP server for ${url}
 
 \`\`\`bash
 npm install
+npx playwright install chromium
 cp .env.example .env
 ${setupNote}
 \`\`\`
@@ -170,6 +171,7 @@ Add to \`claude_desktop_config.json\`:
     console.log('Next steps:');
     console.log(`  cd ${opts.out}`);
     console.log('  npm install');
+    console.log('  npx playwright install chromium');
     if (!isLocal) {
       console.log('  cp .env.example .env');
       console.log('  # Add your OPENAI_API_KEY');

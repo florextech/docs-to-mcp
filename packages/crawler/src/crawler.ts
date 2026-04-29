@@ -21,7 +21,13 @@ export async function crawl(
 
   let browser: Browser | undefined;
   try {
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ headless: true }).catch((err) => {
+      if (String(err).includes('Executable doesn\'t exist')) {
+        console.error('❌ Playwright browsers not installed. Run:\n\n  npx playwright install chromium\n');
+        process.exit(1);
+      }
+      throw err;
+    });
     const context = await browser.newContext({
       userAgent: 'docs-to-mcp-crawler/0.1',
     });
