@@ -1,6 +1,6 @@
 {
   "name": "@florexlabs/docs-to-mcp-monorepo",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": true,
   "description": "Convert any documentation URL into a ready-to-run MCP server — 100% local, no API keys needed",
   "author": "FlorexLabs",

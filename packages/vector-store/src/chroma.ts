@@ -1,4 +1,4 @@
-import { ChromaClient, IncludeEnum } from 'chromadb';
+import { ChromaClient } from 'chromadb';
 import type {
   Chunk,
   SearchResult,
@@ -44,7 +44,7 @@ export class ChromaVectorStore implements VectorStore {
     const res = await col.query({
       queryEmbeddings: [embedding],
       nResults: topK,
-      include: [IncludeEnum.Documents, IncludeEnum.Metadatas, IncludeEnum.Distances],
+      include: ['documents' as never, 'metadatas' as never, 'distances' as never],
     });
 
     const ids = res.ids[0] ?? [];
@@ -64,7 +64,7 @@ export class ChromaVectorStore implements VectorStore {
     { url: string; title: string; chunks: number }[]
   > {
     const col = await this.getCollection();
-    const all = await col.get({ include: [IncludeEnum.Metadatas] });
+    const all = await col.get({ include: ['metadatas' as never] });
     const map = new Map<string, { title: string; count: number }>();
     for (const meta of (all.metadatas ?? []) as (Record<string, unknown> | null)[]) {
       if (!meta) continue;
@@ -87,7 +87,7 @@ export class ChromaVectorStore implements VectorStore {
     const col = await this.getCollection();
     const res = await col.get({
       where: { url },
-      include: [IncludeEnum.Documents, IncludeEnum.Metadatas],
+      include: ['documents' as never, 'metadatas' as never],
     });
     return (res.ids ?? []).map((id: string, i: number) => ({
       id,
