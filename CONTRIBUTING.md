@@ -1,10 +1,10 @@
-# Contributing to @florexlabs/docs-mcp
+# Contributing to @florexlabs/docs-to-mcp
 
 ## Getting Started
 
 ```bash
-git clone https://github.com/florexlabs/docs-mcp.git
-cd docs-mcp
+git clone https://github.com/florexlabs/docs-to-mcp.git
+cd docs-to-mcp
 pnpm install
 pnpm test
 ```
@@ -38,10 +38,10 @@ Scopes: `cli`, `crawler`, `parser`, `chunker`, `embeddings`, `vector-store`, `mc
 
 ## Adding an Embedding Provider
 
-Implement the `EmbeddingProvider` interface from `@florexlabs/docs-mcp-types`:
+Implement the `EmbeddingProvider` interface from `@florexlabs/docs-to-mcp-types`:
 
 ```typescript
-import type { EmbeddingProvider } from '@florexlabs/docs-mcp-types';
+import type { EmbeddingProvider } from '@florexlabs/docs-to-mcp-types';
 
 export class MyProvider implements EmbeddingProvider {
   async embedDocuments(texts: string[]): Promise<number[][]> { ... }
@@ -51,10 +51,10 @@ export class MyProvider implements EmbeddingProvider {
 
 ## Adding a Vector Store
 
-Implement the `VectorStore` interface from `@florexlabs/docs-mcp-types`:
+Implement the `VectorStore` interface from `@florexlabs/docs-to-mcp-types`:
 
 ```typescript
-import type { VectorStore } from '@florexlabs/docs-mcp-types';
+import type { VectorStore } from '@florexlabs/docs-to-mcp-types';
 
 export class MyStore implements VectorStore {
   async upsert(chunks, embeddings): Promise<void> { ... }

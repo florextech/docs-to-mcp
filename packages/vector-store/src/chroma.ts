@@ -3,7 +3,7 @@ import type {
   Chunk,
   SearchResult,
   VectorStore,
-} from '@florexlabs/docs-mcp-types';
+} from '@florexlabs/docs-to-mcp-types';
 
 export class ChromaVectorStore implements VectorStore {
   private client: ChromaClient;

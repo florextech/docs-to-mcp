@@ -1,5 +1,5 @@
 {
-  "name": "@florexlabs/docs-mcp-chunker",
+  "name": "@florexlabs/docs-to-mcp-chunker",
   "version": "0.1.0",
   "type": "module",
   "main": "dist/index.js",
@@ -9,6 +9,6 @@
     "dev": "tsup --watch"
   },
   "dependencies": {
-    "@florexlabs/docs-mcp-types": "workspace:*"
+    "@florexlabs/docs-to-mcp-types": "workspace:*"
   }
 }

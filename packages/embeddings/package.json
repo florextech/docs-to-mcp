@@ -1,5 +1,5 @@
 {
-  "name": "@florexlabs/docs-mcp-embeddings",
+  "name": "@florexlabs/docs-to-mcp-embeddings",
   "version": "0.1.0",
   "type": "module",
   "main": "dist/index.js",
@@ -9,7 +9,7 @@
     "dev": "tsup --watch"
   },
   "dependencies": {
-    "@florexlabs/docs-mcp-types": "workspace:*",
+    "@florexlabs/docs-to-mcp-types": "workspace:*",
     "@huggingface/transformers": "3.4.1",
     "openai": "4.96.0"
   }

@@ -1,14 +1,14 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { z } from 'zod';
-import type { VectorStore, EmbeddingProvider } from '@florexlabs/docs-mcp-types';
+import type { VectorStore, EmbeddingProvider } from '@florexlabs/docs-to-mcp-types';
 
 export function createServer(
   vectorStore: VectorStore,
   embeddingProvider: EmbeddingProvider,
 ) {
   const server = new McpServer({
-    name: 'docs-mcp',
+    name: 'docs-to-mcp',
     version: '0.1.0',
   });
 

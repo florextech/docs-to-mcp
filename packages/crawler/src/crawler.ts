@@ -1,5 +1,5 @@
 import { chromium, type Browser } from 'playwright';
-import type { CrawlResult } from '@florexlabs/docs-mcp-types';
+import type { CrawlResult } from '@florexlabs/docs-to-mcp-types';
 import { normalizeUrl, shouldFollow } from './utils.js';
 
 export interface CrawlOptions {
@@ -23,7 +23,7 @@ export async function crawl(
   try {
     browser = await chromium.launch({ headless: true });
     const context = await browser.newContext({
-      userAgent: 'docs-mcp-crawler/0.1',
+      userAgent: 'docs-to-mcp-crawler/0.1',
     });
 
     while (queue.length > 0 && results.length < limit) {

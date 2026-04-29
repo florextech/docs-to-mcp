@@ -1,4 +1,4 @@
-# @florexlabs/docs-mcp
+# @florexlabs/docs-to-mcp
 
 Convert any documentation URL into a ready-to-run MCP server.
 
@@ -12,9 +12,9 @@ URL → crawl → clean HTML → markdown → chunks → embeddings → vector s
 
 ```bash
 # Initialize a project from a docs URL
-npx @florexlabs/docs-mcp init https://docs.example.com --out ./my-docs-mcp
+npx @florexlabs/docs-to-mcp init https://docs.example.com --out ./my-docs-to-mcp
 
-cd my-docs-mcp
+cd my-docs-to-mcp
 npm install
 
 # Start ChromaDB
@@ -29,13 +29,13 @@ npm run start
 ## Installation
 
 ```bash
-npm install -g @florexlabs/docs-mcp
+npm install -g @florexlabs/docs-to-mcp
 ```
 
 Or use directly with npx:
 
 ```bash
-npx @florexlabs/docs-mcp <command>
+npx @florexlabs/docs-to-mcp <command>
 ```
 
 ## Embedding Providers
@@ -45,8 +45,8 @@ npx @florexlabs/docs-mcp <command>
 Uses [Transformers.js](https://huggingface.co/docs/transformers.js) with the `Xenova/all-MiniLM-L6-v2` model. Runs 100% on your machine via ONNX runtime. No API keys, no external services, no cost.
 
 ```bash
-docs-mcp build                                    # uses local by default
-docs-mcp build --model Xenova/all-MiniLM-L6-v2    # explicit model
+docs-to-mcp build                                    # uses local by default
+docs-to-mcp build --model Xenova/all-MiniLM-L6-v2    # explicit model
 ```
 
 The model is downloaded automatically on first use (~80MB) and cached locally.
@@ -57,34 +57,34 @@ For higher quality embeddings on large documentation sets, you can use OpenAI:
 
 ```bash
 export OPENAI_API_KEY=sk-...
-docs-mcp build --provider openai
-docs-mcp build --provider openai --model text-embedding-3-large
+docs-to-mcp build --provider openai
+docs-to-mcp build --provider openai --model text-embedding-3-large
 ```
 
 ## Commands
 
-### `docs-mcp init <url>`
+### `docs-to-mcp init <url>`
 
 Generate a new MCP server project from a documentation URL.
 
 ```bash
-docs-mcp init https://docs.example.com --out ./my-docs-mcp
+docs-to-mcp init https://docs.example.com --out ./my-docs-to-mcp
 ```
 
 Options:
-- `--out <dir>` — Output directory (default: `./docs-mcp-project`)
+- `--out <dir>` — Output directory (default: `./docs-to-mcp-project`)
 - `--depth <n>` — Crawl depth (default: `3`)
 - `--limit <n>` — Max pages (default: `50`)
 - `--provider <name>` — Embedding provider: `local` or `openai` (default: `local`)
 - `--model <name>` — Embedding model
 - `--collection <name>` — Collection name (default: `docs`)
 
-### `docs-mcp crawl <url>`
+### `docs-to-mcp crawl <url>`
 
 Crawl a documentation site, parse HTML to markdown, and chunk it.
 
 ```bash
-docs-mcp crawl https://docs.example.com --out ./data --depth 3 --limit 50
+docs-to-mcp crawl https://docs.example.com --out ./data --depth 3 --limit 50
 ```
 
 Options:
@@ -93,13 +93,13 @@ Options:
 - `--limit <n>` — Max pages (default: `50`)
 - `--verbose` — Verbose output
 
-### `docs-mcp build`
+### `docs-to-mcp build`
 
 Embed chunks and upsert into ChromaDB.
 
 ```bash
-docs-mcp build                          # local embeddings (default)
-docs-mcp build --provider openai        # use OpenAI instead
+docs-to-mcp build                          # local embeddings (default)
+docs-to-mcp build --provider openai        # use OpenAI instead
 ```
 
 Options:
@@ -110,20 +110,20 @@ Options:
 - `--force` — Force rebuild
 - `--verbose` — Verbose output
 
-### `docs-mcp start`
+### `docs-to-mcp start`
 
 Start the MCP server (stdio transport).
 
 ```bash
-docs-mcp start --collection docs
+docs-to-mcp start --collection docs
 ```
 
-### `docs-mcp dev`
+### `docs-to-mcp dev`
 
 Start the MCP server in development mode with logging.
 
 ```bash
-docs-mcp dev --collection docs
+docs-to-mcp dev --collection docs
 ```
 
 ## MCP Tools
@@ -147,7 +147,7 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
   "mcpServers": {
     "my-docs": {
       "command": "npx",
-      "args": ["@florexlabs/docs-mcp", "start", "--collection", "docs"],
+      "args": ["@florexlabs/docs-to-mcp", "start", "--collection", "docs"],
       "env": {
         "CHROMA_URL": "http://localhost:8000"
       }
@@ -165,7 +165,7 @@ Add to `.cursor/mcp.json`:
   "mcpServers": {
     "my-docs": {
       "command": "npx",
-      "args": ["@florexlabs/docs-mcp", "start", "--collection", "docs"],
+      "args": ["@florexlabs/docs-to-mcp", "start", "--collection", "docs"],
       "env": {
         "CHROMA_URL": "http://localhost:8000"
       }

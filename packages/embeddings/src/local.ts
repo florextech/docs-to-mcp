@@ -1,4 +1,4 @@
-import type { EmbeddingProvider } from '@florexlabs/docs-mcp-types';
+import type { EmbeddingProvider } from '@florexlabs/docs-to-mcp-types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let extractor: any = null;

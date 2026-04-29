@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { chunk } from './chunker.js';
-import type { ParsedDocument } from '@florexlabs/docs-mcp-types';
+import type { ParsedDocument } from '@florexlabs/docs-to-mcp-types';
 
 const doc: ParsedDocument = {
   url: 'https://docs.example.com/guide',

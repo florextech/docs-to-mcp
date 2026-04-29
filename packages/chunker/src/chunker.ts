@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import type { ParsedDocument, Chunk } from '@florexlabs/docs-mcp-types';
+import type { ParsedDocument, Chunk } from '@florexlabs/docs-to-mcp-types';
 
 export interface ChunkOptions {
   maxSize?: number;

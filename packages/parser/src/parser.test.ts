@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { parse } from './parser.js';
-import type { CrawlResult } from '@florexlabs/docs-mcp-types';
+import type { CrawlResult } from '@florexlabs/docs-to-mcp-types';
 
 const makeResult = (html: string): CrawlResult => ({
   url: 'https://docs.example.com/page',

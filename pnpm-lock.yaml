@@ -35,31 +35,31 @@ importers:
 
   packages/chunker:
     dependencies:
-      '@florexlabs/docs-mcp-types':
+      '@florexlabs/docs-to-mcp-types':
         specifier: workspace:*
         version: link:../types
 
   packages/cli:
     dependencies:
-      '@florexlabs/docs-mcp-chunker':
+      '@florexlabs/docs-to-mcp-chunker':
         specifier: workspace:*
         version: link:../chunker
-      '@florexlabs/docs-mcp-crawler':
+      '@florexlabs/docs-to-mcp-crawler':
         specifier: workspace:*
         version: link:../crawler
-      '@florexlabs/docs-mcp-embeddings':
+      '@florexlabs/docs-to-mcp-embeddings':
         specifier: workspace:*
         version: link:../embeddings
-      '@florexlabs/docs-mcp-parser':
+      '@florexlabs/docs-to-mcp-parser':
         specifier: workspace:*
         version: link:../parser
-      '@florexlabs/docs-mcp-server':
+      '@florexlabs/docs-to-mcp-server':
         specifier: workspace:*
         version: link:../mcp-server
-      '@florexlabs/docs-mcp-types':
+      '@florexlabs/docs-to-mcp-types':
         specifier: workspace:*
         version: link:../types
-      '@florexlabs/docs-mcp-vector-store':
+      '@florexlabs/docs-to-mcp-vector-store':
         specifier: workspace:*
         version: link:../vector-store
       commander:
@@ -71,7 +71,7 @@ importers:
 
   packages/crawler:
     dependencies:
-      '@florexlabs/docs-mcp-types':
+      '@florexlabs/docs-to-mcp-types':
         specifier: workspace:*
         version: link:../types
       playwright:
@@ -80,7 +80,7 @@ importers:
 
   packages/embeddings:
     dependencies:
-      '@florexlabs/docs-mcp-types':
+      '@florexlabs/docs-to-mcp-types':
         specifier: workspace:*
         version: link:../types
       '@huggingface/transformers':
@@ -92,7 +92,7 @@ importers:
 
   packages/mcp-server:
     dependencies:
-      '@florexlabs/docs-mcp-types':
+      '@florexlabs/docs-to-mcp-types':
         specifier: workspace:*
         version: link:../types
       '@modelcontextprotocol/sdk':
@@ -104,7 +104,7 @@ importers:
 
   packages/parser:
     dependencies:
-      '@florexlabs/docs-mcp-types':
+      '@florexlabs/docs-to-mcp-types':
         specifier: workspace:*
         version: link:../types
       cheerio:
@@ -122,7 +122,7 @@ importers:
 
   packages/vector-store:
     dependencies:
-      '@florexlabs/docs-mcp-types':
+      '@florexlabs/docs-to-mcp-types':
         specifier: workspace:*
         version: link:../types
       chromadb:

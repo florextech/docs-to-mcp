@@ -1,5 +1,5 @@
 {
-  "name": "@florexlabs/docs-mcp-types",
+  "name": "@florexlabs/docs-to-mcp-types",
   "version": "0.1.0",
   "type": "module",
   "main": "dist/index.js",

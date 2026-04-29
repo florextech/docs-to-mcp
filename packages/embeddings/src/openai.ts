@@ -1,5 +1,5 @@
 import OpenAI from 'openai';
-import type { EmbeddingProvider } from '@florexlabs/docs-mcp-types';
+import type { EmbeddingProvider } from '@florexlabs/docs-to-mcp-types';
 
 export class OpenAIEmbeddingProvider implements EmbeddingProvider {
   private client: OpenAI;

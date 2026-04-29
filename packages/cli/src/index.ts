@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 import 'dotenv/config';
 import { program } from 'commander';
-import { crawl } from '@florexlabs/docs-mcp-crawler';
-import { parse } from '@florexlabs/docs-mcp-parser';
-import { chunk } from '@florexlabs/docs-mcp-chunker';
+import { crawl } from '@florexlabs/docs-to-mcp-crawler';
+import { parse } from '@florexlabs/docs-to-mcp-parser';
+import { chunk } from '@florexlabs/docs-to-mcp-chunker';
 import {
   LocalEmbeddingProvider,
   OpenAIEmbeddingProvider,
-} from '@florexlabs/docs-mcp-embeddings';
-import type { EmbeddingProvider } from '@florexlabs/docs-mcp-types';
-import { ChromaVectorStore } from '@florexlabs/docs-mcp-vector-store';
-import { startServer } from '@florexlabs/docs-mcp-server';
+} from '@florexlabs/docs-to-mcp-embeddings';
+import type { EmbeddingProvider } from '@florexlabs/docs-to-mcp-types';
+import { ChromaVectorStore } from '@florexlabs/docs-to-mcp-vector-store';
+import { startServer } from '@florexlabs/docs-to-mcp-server';
 import { writeFileSync, mkdirSync, existsSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
@@ -27,14 +27,14 @@ function createEmbedder(provider: string, model?: string): EmbeddingProvider {
 }
 
 program
-  .name('docs-mcp')
+  .name('docs-to-mcp')
   .version('0.1.0')
   .description('Convert documentation URLs into MCP servers');
 
 program
   .command('init <url>')
-  .description('Initialize a new docs-mcp project from a documentation URL')
-  .option('--out <dir>', 'Output directory', './docs-mcp-project')
+  .description('Initialize a new docs-to-mcp project from a documentation URL')
+  .option('--out <dir>', 'Output directory', './docs-to-mcp-project')
   .option('--depth <n>', 'Crawl depth', '3')
   .option('--limit <n>', 'Max pages', '50')
   .option('--provider <name>', 'Embedding provider (local or openai)', 'local')
@@ -58,7 +58,7 @@ program
     };
 
     writeFileSync(
-      join(outDir, 'docs-mcp.config.ts'),
+      join(outDir, 'docs-to-mcp.config.ts'),
       `export default ${JSON.stringify(config, null, 2)};\n`,
     );
 
@@ -72,18 +72,18 @@ program
       join(outDir, 'package.json'),
       JSON.stringify(
         {
-          name: 'my-docs-mcp',
+          name: 'my-docs-to-mcp',
           version: '0.1.0',
           private: true,
           type: 'module',
           scripts: {
-            crawl: `docs-mcp crawl ${url} --out ./data --depth ${config.depth} --limit ${config.limit}`,
-            build: `docs-mcp build --collection ${config.collection}${providerFlag}`,
-            start: `docs-mcp start --collection ${config.collection}${providerFlag}`,
-            dev: `docs-mcp dev --collection ${config.collection}${providerFlag}`,
+            crawl: `docs-to-mcp crawl ${url} --out ./data --depth ${config.depth} --limit ${config.limit}`,
+            build: `docs-to-mcp build --collection ${config.collection}${providerFlag}`,
+            start: `docs-to-mcp start --collection ${config.collection}${providerFlag}`,
+            dev: `docs-to-mcp dev --collection ${config.collection}${providerFlag}`,
           },
           dependencies: {
-            '@florexlabs/docs-mcp': '^0.1.0',
+            '@florexlabs/docs-to-mcp': '^0.1.0',
           },
         },
         null,
@@ -92,14 +92,14 @@ program
     );
 
     const serverImport = isLocal
-      ? `import { LocalEmbeddingProvider } from '@florexlabs/docs-mcp-embeddings';\nconst embeddings = new LocalEmbeddingProvider('${model}');`
-      : `import { OpenAIEmbeddingProvider } from '@florexlabs/docs-mcp-embeddings';\nconst embeddings = new OpenAIEmbeddingProvider(\n  process.env.OPENAI_API_KEY!,\n  process.env.OPENAI_EMBEDDING_MODEL ?? '${model}',\n);`;
+      ? `import { LocalEmbeddingProvider } from '@florexlabs/docs-to-mcp-embeddings';\nconst embeddings = new LocalEmbeddingProvider('${model}');`
+      : `import { OpenAIEmbeddingProvider } from '@florexlabs/docs-to-mcp-embeddings';\nconst embeddings = new OpenAIEmbeddingProvider(\n  process.env.OPENAI_API_KEY!,\n  process.env.OPENAI_EMBEDDING_MODEL ?? '${model}',\n);`;
 
     writeFileSync(
       join(outDir, 'src', 'server.ts'),
       `import 'dotenv/config';
-import { ChromaVectorStore } from '@florexlabs/docs-mcp-vector-store';
-import { startServer } from '@florexlabs/docs-mcp-server';
+import { ChromaVectorStore } from '@florexlabs/docs-to-mcp-vector-store';
+import { startServer } from '@florexlabs/docs-to-mcp-server';
 ${serverImport}
 
 const store = new ChromaVectorStore(
@@ -159,7 +159,7 @@ Add to \`claude_desktop_config.json\`:
   "mcpServers": {
     "my-docs": {
       "command": "npx",
-      "args": ["docs-mcp", "start", "--collection", "${config.collection}"]
+      "args": ["docs-to-mcp", "start", "--collection", "${config.collection}"]
     }
   }
 }
@@ -223,7 +223,7 @@ program
     const chunksPath = join(dataDir, 'chunks.json');
 
     if (!existsSync(chunksPath)) {
-      console.error('❌ No chunks.json found. Run "docs-mcp crawl" first.');
+      console.error('❌ No chunks.json found. Run "docs-to-mcp crawl" first.');
       process.exit(1);
     }
 

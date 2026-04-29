@@ -6,10 +6,10 @@ This example shows how to create an MCP server for the React documentation.
 
 ```bash
 # 1. Initialize the project
-npx @florexlabs/docs-mcp init https://react.dev/learn --out ./react-docs-mcp
+npx @florexlabs/docs-to-mcp init https://react.dev/learn --out ./react-docs-to-mcp
 
 # 2. Setup
-cd react-docs-mcp
+cd react-docs-to-mcp
 npm install
 cp .env.example .env
 # Add your OPENAI_API_KEY to .env
@@ -39,7 +39,7 @@ Add to your Claude Desktop config:
   "mcpServers": {
     "react-docs": {
       "command": "npx",
-      "args": ["@florexlabs/docs-mcp", "start", "--collection", "docs"],
+      "args": ["@florexlabs/docs-to-mcp", "start", "--collection", "docs"],
       "env": {
         "OPENAI_API_KEY": "sk-...",
         "CHROMA_URL": "http://localhost:8000"

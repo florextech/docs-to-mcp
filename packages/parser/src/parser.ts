@@ -1,6 +1,6 @@
 import { load } from 'cheerio';
 import TurndownService from 'turndown';
-import type { CrawlResult, ParsedDocument } from '@florexlabs/docs-mcp-types';
+import type { CrawlResult, ParsedDocument } from '@florexlabs/docs-to-mcp-types';
 
 const REMOVE_SELECTORS = [
   'nav', 'footer', 'header', 'aside', 'script', 'style', 'noscript',
