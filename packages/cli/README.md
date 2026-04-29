@@ -8,17 +8,27 @@ Convert any documentation URL into a ready-to-run MCP server.
 URL → crawl → clean HTML → markdown → chunks → embeddings → vector store → MCP server
 ```
 
+## Prerequisites
+
+- **Node.js** >= 18
+- **Docker** (for ChromaDB): `docker run -p 8000:8000 chromadb/chroma`
+- **Playwright browsers**: `npx playwright install chromium`
+- No API keys needed for default local embeddings
+
 ## Quick Start
 
 ```bash
+# Install Playwright browsers (one-time)
+npx playwright install chromium
+
+# Start ChromaDB
+docker run -p 8000:8000 chromadb/chroma
+
 # Initialize a project from a docs URL
 npx @florexlabs/docs-to-mcp init https://docs.example.com --out ./my-docs-to-mcp
 
 cd my-docs-to-mcp
 npm install
-
-# Start ChromaDB
-docker run -p 8000:8000 chromadb/chroma
 
 # Crawl, build, and start — no API keys needed!
 npm run crawl
@@ -183,13 +193,6 @@ CHROMA_URL=http://localhost:8000
 OPENAI_API_KEY=sk-...
 OPENAI_EMBEDDING_MODEL=text-embedding-3-small
 ```
-
-## Prerequisites
-
-- Node.js >= 18
-- ChromaDB running (e.g., `docker run -p 8000:8000 chromadb/chroma`)
-- Playwright browsers: `npx playwright install chromium`
-- No API keys needed for default local embeddings
 
 ## Architecture
 
