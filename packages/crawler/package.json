@@ -1,6 +1,6 @@
 {
   "name": "@florexlabs/docs-to-mcp-crawler",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -19,5 +19,24 @@
     "type": "git",
     "url": "https://github.com/florextech/docs-to-mcp.git",
     "directory": "packages/crawler"
-  }
+  },
+  "author": "FlorexLabs",
+  "license": "MIT",
+  "homepage": "https://github.com/florextech/docs-to-mcp",
+  "bugs": {
+    "url": "https://github.com/florextech/docs-to-mcp/issues"
+  },
+  "description": "Playwright-based same-origin documentation crawler for docs-to-mcp",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "documentation",
+    "ai",
+    "llm",
+    "rag",
+    "crawler",
+    "scraper",
+    "playwright",
+    "web-crawler"
+  ]
 }

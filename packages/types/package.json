@@ -1,6 +1,6 @@
 {
   "name": "@florexlabs/docs-to-mcp-types",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -15,5 +15,23 @@
     "type": "git",
     "url": "https://github.com/florextech/docs-to-mcp.git",
     "directory": "packages/types"
-  }
+  },
+  "author": "FlorexLabs",
+  "license": "MIT",
+  "homepage": "https://github.com/florextech/docs-to-mcp",
+  "bugs": {
+    "url": "https://github.com/florextech/docs-to-mcp/issues"
+  },
+  "description": "Shared TypeScript interfaces for the docs-to-mcp pipeline",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "documentation",
+    "ai",
+    "llm",
+    "rag",
+    "types",
+    "typescript",
+    "interfaces"
+  ]
 }

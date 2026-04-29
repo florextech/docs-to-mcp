@@ -1,8 +1,8 @@
 {
   "name": "@florexlabs/docs-to-mcp-monorepo",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
-  "description": "Convert any documentation URL into a ready-to-run MCP server",
+  "description": "Convert any documentation URL into a ready-to-run MCP server — 100% local, no API keys needed",
   "author": "FlorexLabs",
   "license": "MIT",
   "engines": {
@@ -28,5 +28,30 @@
     "prettier": "3.5.3",
     "vitest": "3.1.2",
     "tsup": "8.4.0"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "documentation",
+    "ai",
+    "llm",
+    "rag",
+    "cli",
+    "local-first",
+    "open-source",
+    "chromadb",
+    "transformers-js",
+    "embeddings",
+    "vector-search",
+    "claude",
+    "cursor"
+  ],
+  "homepage": "https://github.com/florextech/docs-to-mcp",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/florextech/docs-to-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/florextech/docs-to-mcp/issues"
   }
 }
