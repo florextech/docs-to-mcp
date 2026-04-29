@@ -95,10 +95,8 @@ export class ChromaVectorStore implements VectorStore {
   async getBySource(url: string): Promise<Chunk[]> {
     const col = await this.getCollection();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const res = await col.get({
-      where: { url },
-      include: ['documents', 'metadatas'] as any,
-    });
+    const include = ['documents', 'metadatas'] as any;
+    const res = await col.get({ where: { url }, include });
     return (res.ids ?? []).map((id: string, i: number) => ({
       id,
       content: String(res.documents?.[i] ?? ''),
