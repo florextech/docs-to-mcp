@@ -12,5 +12,13 @@
     "@florexlabs/docs-to-mcp-types": "workspace:*",
     "@huggingface/transformers": "3.4.1",
     "openai": "4.96.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/florextech/docs-to-mcp.git",
+    "directory": "packages/embeddings"
   }
 }

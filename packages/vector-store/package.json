@@ -11,5 +11,13 @@
   "dependencies": {
     "@florexlabs/docs-to-mcp-types": "workspace:*",
     "chromadb": "1.9.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/florextech/docs-to-mcp.git",
+    "directory": "packages/vector-store"
   }
 }

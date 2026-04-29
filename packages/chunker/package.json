@@ -10,5 +10,13 @@
   },
   "dependencies": {
     "@florexlabs/docs-to-mcp-types": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/florextech/docs-to-mcp.git",
+    "directory": "packages/chunker"
   }
 }

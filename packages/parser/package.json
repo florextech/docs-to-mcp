@@ -15,5 +15,13 @@
   },
   "devDependencies": {
     "@types/turndown": "5.0.5"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/florextech/docs-to-mcp.git",
+    "directory": "packages/parser"
   }
 }
